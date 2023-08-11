@@ -18,6 +18,8 @@ const columns: ColumnsType<PageDataType> = [
     title: 'Created Time',
     dataIndex: 'created_time',
     key: 'created_time',
+    sorter: (a, b) => a.created_time.localeCompare(b.created_time),
+    sortDirections: ['descend', 'ascend'],
     render: (createdTime) => moment(createdTime).format('DD/MM/YYYY HH:mm:ss'),
   },
   {

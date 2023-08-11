@@ -12,12 +12,6 @@ import moment from 'moment';
 
 const { Header, Content } = Layout;
 
-interface DetailDataType {
-  created_time: string;
-  message: string;
-  id: string;
-}
-
 interface OverallDataType {
   created_time: string;
   message: string;
@@ -37,6 +31,12 @@ const columns: ColumnsType<CommentDataType> = [
     title: 'Comment Time',
     dataIndex: 'created_time',
     key: 'created_time',
+    sorter: {
+      compare: (a, b) =>
+        new Date(a.created_time).getTime() - new Date(b.created_time).getTime(),
+      multiple: 1,
+    },
+    sortDirections: ['descend', 'ascend'],
     render: (createdTime) => moment(createdTime).format('DD/MM/YYYY hh:mm:ss'),
   },
   {
@@ -48,11 +48,21 @@ const columns: ColumnsType<CommentDataType> = [
     title: 'Reactions',
     dataIndex: 'reactions',
     key: 'reactions',
+    sorter: {
+      compare: (a, b) => a.reactions - b.reactions,
+      multiple: 2,
+    },
+    sortDirections: ['descend', 'ascend'],
   },
   {
     title: 'Replies',
     dataIndex: 'replies',
     key: 'replies',
+    sorter: {
+      compare: (a, b) => a.replies - b.replies,
+      multiple: 2,
+    },
+    sortDirections: ['descend', 'ascend'],
   },
 ];
 
