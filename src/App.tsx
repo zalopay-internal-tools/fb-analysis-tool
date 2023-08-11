@@ -7,7 +7,7 @@ function App() {
   React.useEffect(() => {}, []);
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename='/fb-analysis-tool'>
       <AppRoutes />
     </BrowserRouter>
   );
