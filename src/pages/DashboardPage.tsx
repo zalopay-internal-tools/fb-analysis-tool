@@ -4,8 +4,9 @@ import { getPublishedPosts } from '../services/PageService';
 import { ColumnsType } from 'antd/lib/table';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
+import { TokenContext, TokenTypeState } from '../context/TokenContext';
 
-const { Header, Content } = Layout;
+const { Content } = Layout;
 
 interface PageDataType {
   created_time: string;
@@ -39,20 +40,28 @@ const columns: ColumnsType<PageDataType> = [
 
 export const DashboardPage: React.FC = () => {
   const [data, setData] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
+  const { token } = React.useContext(TokenContext) as TokenTypeState;
   React.useEffect(() => {
     const getData = async () => {
-      const resData = await getPublishedPosts();
+      setLoading(true);
+      const resData = await getPublishedPosts(token);
       setData(resData);
+      setLoading(false);
     };
 
     getData();
-  }, []);
+  }, [token]);
 
   return (
     <Layout>
-      <Header>Header</Header>
       <Content>
-        <Table dataSource={data} columns={columns} rowKey={(post) => post.id} />
+        <Table
+          loading={loading}
+          dataSource={data}
+          columns={columns}
+          rowKey={(post) => post.id}
+        />
       </Content>
     </Layout>
   );

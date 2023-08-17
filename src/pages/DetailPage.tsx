@@ -1,7 +1,7 @@
 import { Layout, Table, Typography } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import * as React from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import {
   getPostDetail,
   getPostComments,
@@ -9,8 +9,7 @@ import {
   getCommentReplies,
 } from '../services/PostService';
 import moment from 'moment';
-
-const { Header, Content } = Layout;
+import { TokenContext, TokenTypeState } from '../context/TokenContext';
 
 interface OverallDataType {
   created_time: string;
@@ -68,29 +67,31 @@ const columns: ColumnsType<CommentDataType> = [
 
 export const DetailPage: React.FC = () => {
   const [searchParams] = useSearchParams();
+  const detailId = searchParams.get('detailId') || '';
+  const { token } = React.useContext(TokenContext) as TokenTypeState;
   const [overallData, setOverallData] = React.useState<OverallDataType>({
     created_time: '',
     message: '',
     id: '',
   });
-  const detailId = searchParams.get('detailId') || '';
   const [detailData, setDetailData] = React.useState<CommentDataType[]>([]);
+  const [loading, setLoading] = React.useState(false);
 
-  const getOverallData = async (id: string) => {
-    const postDetailData = await getPostDetail(id);
+  const getOverallData = async (id: string, accessToken: string) => {
+    const postDetailData = await getPostDetail(id, accessToken);
     setOverallData(postDetailData);
   };
 
-  const getPostCommentsDetail = async (id: string) => {
+  const getPostCommentsDetail = async (id: string, accessToken: string) => {
     const resultData = new Array<CommentDataType>();
-    const comments = await getPostComments(id);
+    const comments = await getPostComments(id, accessToken);
 
     if (comments && comments.length !== 0) {
       await Promise.all(
         comments.map(async (comment: CommentDataType) => {
           const [commentReactions, commentReplies] = await Promise.all([
-            getCommentReactions(comment.id),
-            getCommentReplies(comment.id),
+            getCommentReactions(comment.id, accessToken),
+            getCommentReplies(comment.id, accessToken),
           ]);
           comment.reactions = commentReactions.summary?.total_count;
           comment.replies = commentReplies.summary?.total_count;
@@ -103,16 +104,17 @@ export const DetailPage: React.FC = () => {
 
   React.useEffect(() => {
     const getAllData = async () => {
-      await getOverallData(detailId);
-      await getPostCommentsDetail(detailId);
+      setLoading(true);
+      await getOverallData(detailId, token);
+      await getPostCommentsDetail(detailId, token);
+      setLoading(false);
     };
 
     getAllData();
-  }, [detailId]);
+  }, [detailId, token]);
 
   return (
     <Layout>
-      <Header>Header</Header>
       <div
         style={{
           display: 'flex',
@@ -127,13 +129,14 @@ export const DetailPage: React.FC = () => {
         <Typography.Text>{overallData.message}</Typography.Text>
       </div>
 
-      <Content>
+      <Layout.Content>
         <Table
+          loading={loading}
           dataSource={detailData}
           columns={columns}
           rowKey={(detail) => detail.id}
         />
-      </Content>
+      </Layout.Content>
     </Layout>
   );
 };

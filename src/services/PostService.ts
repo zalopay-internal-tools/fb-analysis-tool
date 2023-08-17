@@ -1,9 +1,12 @@
 import { BASE_API, GET_COMMENTS, GET_REACTIONS } from '../common/api-path';
-import { PAGE_ACCESS_TOKEN, REACTION_TYPE } from '../common/constants';
+import { REACTION_TYPE } from '../common/constants';
 
-export const getPostDetail = async (postId: string) => {
+export const getPostDetail = async (
+  postId: string,
+  pageAccessToken: string
+) => {
   const response = await fetch(
-    `${BASE_API}/${postId}?access_token=${PAGE_ACCESS_TOKEN}`,
+    `${BASE_API}/${postId}?access_token=${pageAccessToken}`,
     { method: 'GET' }
   );
   const resJson = await response.json();
@@ -12,12 +15,13 @@ export const getPostDetail = async (postId: string) => {
 
 export const getPostReactions = async (
   postId: string,
-  type: REACTION_TYPE = REACTION_TYPE.NONE
+  type: REACTION_TYPE = REACTION_TYPE.NONE,
+  pageAccessToken: string
 ) => {
   const response = await fetch(
     `${BASE_API}/${postId}${GET_REACTIONS}${
       type !== REACTION_TYPE.NONE ? `&type=${type}` : ''
-    }&access_token=${PAGE_ACCESS_TOKEN}`,
+    }&access_token=${pageAccessToken}`,
     {
       method: 'GET',
     }
@@ -26,9 +30,12 @@ export const getPostReactions = async (
   return { data: resJson?.data, summary: resJson?.summary };
 };
 
-export const getPostComments = async (postId: string) => {
+export const getPostComments = async (
+  postId: string,
+  pageAccessToken: string
+) => {
   const response = await fetch(
-    `${BASE_API}/${postId}${GET_COMMENTS}&access_token=${PAGE_ACCESS_TOKEN}`,
+    `${BASE_API}/${postId}${GET_COMMENTS}&access_token=${pageAccessToken}`,
     {
       method: 'GET',
     }
@@ -39,12 +46,13 @@ export const getPostComments = async (postId: string) => {
 
 export const getCommentReactions = async (
   commentId: string,
+  pageAccessToken: string,
   type: REACTION_TYPE = REACTION_TYPE.NONE
 ) => {
   const response = await fetch(
     `${BASE_API}/${commentId}${GET_REACTIONS}${
       type !== REACTION_TYPE.NONE ? `&type=${type}` : ''
-    }&access_token=${PAGE_ACCESS_TOKEN}`,
+    }&access_token=${pageAccessToken}`,
     {
       method: 'GET',
     }
@@ -53,9 +61,12 @@ export const getCommentReactions = async (
   return { data: resJson?.data, summary: resJson?.summary };
 };
 
-export const getCommentReplies = async (commentId: string) => {
+export const getCommentReplies = async (
+  commentId: string,
+  pageAccessToken: string
+) => {
   const response = await fetch(
-    `${BASE_API}/${commentId}${GET_COMMENTS}&access_token=${PAGE_ACCESS_TOKEN}`,
+    `${BASE_API}/${commentId}${GET_COMMENTS}&access_token=${pageAccessToken}`,
     {
       method: 'GET',
     }

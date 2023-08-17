@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/css/main.26f1159a.css",
-    "main.js": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/main.02ed4ccd.js",
+    "main.js": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/main.1c3408ce.js",
     "static/js/787.5159ba11.chunk.js": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/787.5159ba11.chunk.js",
     "index.html": "https://zalopay-internal-tools.github.io/fb-analysis-tool/index.html",
     "main.26f1159a.css.map": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/css/main.26f1159a.css.map",
-    "main.02ed4ccd.js.map": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/main.02ed4ccd.js.map",
+    "main.1c3408ce.js.map": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/main.1c3408ce.js.map",
     "787.5159ba11.chunk.js.map": "https://zalopay-internal-tools.github.io/fb-analysis-tool/static/js/787.5159ba11.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.26f1159a.css",
-    "static/js/main.02ed4ccd.js"
+    "static/js/main.1c3408ce.js"
   ]
 }
